@@ -1,4 +1,4 @@
-package com.example.github_data.data.repository.remote
+package com.example.github_data.data.repository.remote.data
 
 
 import com.google.gson.annotations.SerializedName

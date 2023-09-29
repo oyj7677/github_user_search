@@ -34,6 +34,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":github-domain"))
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -42,7 +44,6 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.2")
     implementation("com.squareup.okhttp3:mockwebserver:4.11.0")
     implementation("androidx.test:core-ktx:1.5.0")
-
 
     testImplementation("junit:junit:4.13.2")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")

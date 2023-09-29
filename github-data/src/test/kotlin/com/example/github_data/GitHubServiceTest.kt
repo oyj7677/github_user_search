@@ -1,13 +1,12 @@
-package com.example.github_data.retrofit
+package com.example.github_data
 
-import com.example.github_data.data.repository.remote.RemoteGithubUserData
+import com.example.github_data.data.repository.remote.data.RemoteGithubUserData
+import com.example.github_data.retrofit.GithubApi
 import com.google.common.truth.Truth
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
 import org.junit.Before

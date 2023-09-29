@@ -1,6 +1,6 @@
 package com.example.github_data.retrofit
 
-import com.example.github_data.data.repository.remote.RemoteGithubUserData
+import com.example.github_data.data.repository.remote.data.RemoteGithubUserData
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
