@@ -9,23 +9,20 @@ class GithubRepositoryImpl(
     private val remoteGithubUserDataSource: RemoteGithubUserDataSource,
     private val localGithubUserDataSource: LocalGithubUserDataSource
 ) : GithubUserRepository {
-    override suspend fun getGithubUserDataByName(
-        name: String,
-        isLocal: Boolean
-    ): List<GithubUserData> {
-        // 로컬 데이터와 비교하여 즐겨찾기 여부 확인
+    override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
         val bookmarkUserData = localGithubUserDataSource.getGithubUserDataByName(name)
-        return if (isLocal) {
-            bookmarkUserData
-        } else {
-            val remoteUserData = remoteGithubUserDataSource.getGithubUserDataByName(name)
-            remoteUserData.map { remoteData ->
-                val isBookmark = bookmarkUserData.any { bookmarkData ->
-                    bookmarkData.id == remoteData.id
-                }
-                remoteData.copy(isBookmark = isBookmark)
+        val remoteUserData = remoteGithubUserDataSource.getGithubUserDataByName(name)
+
+        return remoteUserData.map { remoteData ->
+            val isBookmark = bookmarkUserData.any { bookmarkData ->
+                bookmarkData.id == remoteData.id
             }
+            remoteData.copy(isBookmark = isBookmark)
         }
+    }
+
+    override suspend fun getBookmarkGithubUserDataByName(name: String): List<GithubUserData> {
+        return localGithubUserDataSource.getGithubUserDataByName(name)
     }
 
     override suspend fun insertGithubUserData(githubUserData: GithubUserData) {
@@ -35,5 +32,4 @@ class GithubRepositoryImpl(
     override suspend fun deleteGithubUserDataById(id: Int) {
         localGithubUserDataSource.deleteGithubUserDataById(id)
     }
-
 }
