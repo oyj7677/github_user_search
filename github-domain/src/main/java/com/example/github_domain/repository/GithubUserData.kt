@@ -1,4 +1,4 @@
-package com.example.github_domain
+package com.example.github_domain.repository
 
 data class GithubUserData(
     val id: Int,

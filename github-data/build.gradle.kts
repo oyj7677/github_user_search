@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.githubsearch"
+    namespace = "com.example.githubsearch.data"
     compileSdk = 33
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 27
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    api("javax.inject:javax.inject:1")
     implementation(project(":github-domain"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
@@ -41,9 +42,11 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    implementation("androidx.room:room-runtime:2.5.2")
     implementation("com.squareup.okhttp3:mockwebserver:4.11.0")
     implementation("androidx.test:core-ktx:1.5.0")
+    implementation("androidx.room:room-runtime:2.5.2")
+    kapt("androidx.room:room-compiler:2.5.2")
+
 
     testImplementation("junit:junit:4.13.2")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")

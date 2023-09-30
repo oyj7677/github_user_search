@@ -2,13 +2,14 @@ package com.example.github_data.data.repository
 
 import com.example.github_data.data.repository.local.LocalGithubUserDataSource
 import com.example.github_data.data.repository.remote.RemoteGithubUserDataSource
-import com.example.github_domain.GithubUserData
-import com.example.github_domain.GithubUserRepository
+import com.example.github_domain.repository.GithubUserData
+import com.example.github_domain.repository.GithubRepository
+import javax.inject.Inject
 
-class GithubRepositoryImpl(
+class GithubRepositoryImpl @Inject constructor(
     private val remoteGithubUserDataSource: RemoteGithubUserDataSource,
     private val localGithubUserDataSource: LocalGithubUserDataSource
-) : GithubUserRepository {
+) : GithubRepository {
     override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
         val bookmarkUserData = localGithubUserDataSource.getGithubUserDataByName(name)
         val remoteUserData = remoteGithubUserDataSource.getGithubUserDataByName(name)

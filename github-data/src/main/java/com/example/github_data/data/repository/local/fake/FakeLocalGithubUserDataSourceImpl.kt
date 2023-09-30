@@ -4,7 +4,7 @@ import com.example.github_data.data.repository.local.LocalGithubUserDataSource
 import com.example.github_data.data.room.GithubBookmarkUserEntity
 import com.example.github_data.data.entityToDomain
 import com.example.github_data.data.toEntity
-import com.example.github_domain.GithubUserData
+import com.example.github_domain.repository.GithubUserData
 
 class FakeLocalGithubUserDataSourceImpl :
     LocalGithubUserDataSource {

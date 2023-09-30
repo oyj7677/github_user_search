@@ -2,7 +2,7 @@ package com.example.github_data.data
 
 import com.example.github_data.data.repository.remote.data.Item
 import com.example.github_data.data.room.GithubBookmarkUserEntity
-import com.example.github_domain.GithubUserData
+import com.example.github_domain.repository.GithubUserData
 
 
 // local to domain

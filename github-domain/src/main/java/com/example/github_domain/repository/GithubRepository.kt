@@ -1,6 +1,6 @@
-package com.example.github_domain
+package com.example.github_domain.repository
 
-interface GithubUserRepository {
+interface GithubRepository {
     suspend fun getGithubUserDataByName(name: String): List<GithubUserData>
 
     suspend fun getBookmarkGithubUserDataByName(name: String): List<GithubUserData>

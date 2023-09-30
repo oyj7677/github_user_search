@@ -1,6 +1,6 @@
 package com.example.github_data.data.repository.local
 
-import com.example.github_domain.GithubUserData
+import com.example.github_domain.repository.GithubUserData
 
 interface LocalGithubUserDataSource {
     suspend fun getGithubUserDataByName(name: String): List<GithubUserData>

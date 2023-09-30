@@ -4,8 +4,8 @@ import com.example.github_data.data.repository.GithubRepositoryImpl
 import com.example.github_data.data.repository.local.fake.FakeLocalGithubUserDataSourceImpl
 import com.example.github_data.data.repository.remote.RemoteGithubUserDataSourceImpl
 import com.example.github_data.retrofit.GithubApi
-import com.example.github_domain.GithubUserData
-import com.example.github_domain.GithubUserRepository
+import com.example.github_domain.repository.GithubUserData
+import com.example.github_domain.repository.GithubRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -23,7 +23,7 @@ class GithubRepositoryImplTest {
     // 통신 및 데이터 저장
     private val server = MockWebServer()
     private lateinit var service: GithubApi
-    private  lateinit var repository: GithubUserRepository
+    private  lateinit var repository: GithubRepository
 
     @Before
     fun setUp() {
