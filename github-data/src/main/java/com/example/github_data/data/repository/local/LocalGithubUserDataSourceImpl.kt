@@ -8,17 +8,17 @@ import javax.inject.Inject
 
 class LocalGithubUserDataSourceImpl @Inject constructor(
     private val githubUserDao: GithubUserDao
-) :
-    LocalGithubUserDataSource {
+) : LocalGithubUserDataSource {
     override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
-        return githubUserDao.getGithubRepoByName(name).entityToDomain()
+        // todo id와 name 관련 답변 후 수정
+        return githubUserDao.getGithubRepo().entityToDomain()
     }
 
     override suspend fun insertGithubUserData(githubUserData: GithubUserData) {
         githubUserDao.insertGithubRepoEntity(githubUserData.toEntity())
     }
 
-    override suspend fun deleteGithubUserDataById(id: Int) {
-        githubUserDao.deleteAllGithubRepoById(id)
+    override suspend fun deleteGithubUserData(githubUserData: GithubUserData) {
+        githubUserDao.deleteAllGithubRepoById(githubUserData.id)
     }
 }

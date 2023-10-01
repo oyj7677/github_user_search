@@ -1,17 +1,20 @@
 package com.example.githubsearch.viewpager
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubsearch.GithubUserSearchViewModel
 import com.example.githubsearch.databinding.SearchUserListFragmentBinding
 
-class UserListFragment: Fragment() {
-    private val binding by lazy { SearchUserListFragmentBinding.inflate(layoutInflater)}
+class UserListFragment : Fragment() {
+    private val binding by lazy { SearchUserListFragmentBinding.inflate(layoutInflater) }
     private val viewModel: GithubUserSearchViewModel by activityViewModels()
     private lateinit var userListAdapter: UserListAdapter
     override fun onCreateView(
@@ -33,7 +36,9 @@ class UserListFragment: Fragment() {
 
     private fun initRecyclerView() {
         binding.rvUserList.layoutManager = LinearLayoutManager(requireActivity())
-        userListAdapter = UserListAdapter()
+        userListAdapter = UserListAdapter(UserListAdapter.ItemClickListener { userData ->
+            viewModel.clickItem(userData)
+        })
         binding.rvUserList.adapter = userListAdapter
     }
 

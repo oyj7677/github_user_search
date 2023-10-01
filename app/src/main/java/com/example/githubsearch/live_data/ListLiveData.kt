@@ -1,4 +1,4 @@
-package com.example.githubsearch
+package com.example.githubsearch.live_data
 
 import androidx.lifecycle.MutableLiveData
 

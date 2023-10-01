@@ -1,19 +1,21 @@
 package com.example.githubsearch
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.example.github_domain.Api
-import com.example.github_domain.Local
 import com.example.githubsearch.databinding.GithubUserSearchFragmentBinding
 import com.example.githubsearch.viewpager.ViewPagerFragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class GithubUserSearchFragment : Fragment() {
@@ -37,11 +39,9 @@ class GithubUserSearchFragment : Fragment() {
     }
 
     private fun initViewModelObserve() {
-        viewModel.dataSourceType.observe(viewLifecycleOwner) { dataSourceType ->
-            when (dataSourceType) {
-                Api -> TODO()
-                Local -> TODO()
-            }
+        viewModel.clickSearch.observe(viewLifecycleOwner) {
+            hideKeyboard()
+            binding.etSearchText.clearFocus()
         }
     }
 
@@ -57,6 +57,12 @@ class GithubUserSearchFragment : Fragment() {
         }.attach()
     }
 
+    private fun hideKeyboard() {
+        if(activity != null && requireActivity().currentFocus != null) {
+            val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+        }
+    }
 
     companion object {
         fun newInstance() = GithubUserSearchFragment()

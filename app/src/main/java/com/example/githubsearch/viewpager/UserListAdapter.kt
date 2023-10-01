@@ -7,13 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.github_domain.repository.GithubUserData
 import com.example.githubsearch.databinding.UserListBinding
 
-class UserListAdapter : RecyclerView.Adapter<UserListAdapter.RecordViewHolder>() {
+class UserListAdapter(private val itemClickListener: ItemClickListener) : RecyclerView.Adapter<UserListAdapter.RecordViewHolder>() {
 
     private var memoryList = emptyList<GithubUserData>()
 
     class RecordViewHolder(private var userListBinding: UserListBinding) : RecyclerView.ViewHolder(userListBinding.root) {
-        fun bind(userData: GithubUserData) {
+        fun bind(userData: GithubUserData, clickListener: ItemClickListener) {
             userListBinding.userData = userData
+            userListBinding.clickListener = clickListener
+            userListBinding.executePendingBindings()
         }
     }
 
@@ -26,7 +28,7 @@ class UserListAdapter : RecyclerView.Adapter<UserListAdapter.RecordViewHolder>()
     override fun getItemCount() = memoryList.size
 
     override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
-        holder.bind(memoryList[position])
+        holder.bind(memoryList[position], itemClickListener)
     }
 
     fun setData(newMemoryList: List<GithubUserData>) {
@@ -52,5 +54,9 @@ class UserListAdapter : RecyclerView.Adapter<UserListAdapter.RecordViewHolder>()
             return oldList[oldItemPosition] == newList[newItemPosition]
         }
 
+    }
+
+    class ItemClickListener(val clickListener: (userData: GithubUserData) -> Unit) {
+        fun onClickItem(userData: GithubUserData) = clickListener(userData)
     }
 }

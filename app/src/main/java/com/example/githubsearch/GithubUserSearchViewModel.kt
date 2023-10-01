@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import com.example.github_domain.DataSourceType
 import com.example.github_domain.repository.GithubRepository
 import com.example.github_domain.repository.GithubUserData
+import com.example.githubsearch.live_data.ListLiveData
+import com.example.githubsearch.live_data.MutableSingleLiveData
+import com.example.githubsearch.live_data.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,12 +31,38 @@ class GithubUserSearchViewModel @Inject constructor(private val gitHubRepository
     val dataSourceType: MutableLiveData<DataSourceType>
         get() = _dataSourceType
 
+    private val _clickSearch = MutableSingleLiveData<Any>()
+    val clickSearch: SingleLiveData<Any>
+            get() = _clickSearch
+
     // 검색 로직
     fun searchGithubUser() {
+        _clickSearch.postValue(Any())
+
         CoroutineScope(Dispatchers.IO).launch {
             gitHubRepository.getGithubUserDataByName(query.value.toString()).also {
                 _githubUserList.postValue(it.toMutableList())
             }
         }
     }
+
+    fun clickItem(githubUserData: GithubUserData) {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (githubUserData.isBookmark) {
+                gitHubRepository.deleteGithubUserDataById(githubUserData.id)
+            } else {
+                gitHubRepository.insertGithubUserData(githubUserData)
+            }
+
+            _githubUserList.value?.map {
+                if (it.id == githubUserData.id) {
+                    it.copy(isBookmark = !it.isBookmark)
+                } else {
+                    it
+                }
+            }.also { _githubUserList.postValue(it?.toMutableList()) }
+        }
+    }
+
+
 }
