@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.githubsearch.GithubUserSearchViewModel" />
@@ -19,56 +20,52 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintVertical_weight="1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/tab_data_source_type"
             android:gravity="center_vertical"
+            android:text="GitHub Stars"
             android:textSize="23sp"
-            android:text="GitHub Stars" />
+            app:layout_constraintBottom_toTopOf="@+id/tab_data_source_type"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_weight="1" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_data_source_type"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintVertical_weight="1"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
             app:layout_constraintBottom_toTopOf="@+id/ll_search"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:layout_constraintVertical_weight="1" />
 
         <LinearLayout
             android:id="@+id/ll_search"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintVertical_weight="1"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/tab_data_source_type"
             app:layout_constraintBottom_toTopOf="@+id/vp_user_list"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/tab_data_source_type"
+            app:layout_constraintVertical_weight="1">
+
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:hint="테스트 입니다."
-                android:text="@={viewModel.query}"
-                />
+                android:text="@={viewModel.query}" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-               android:src="@mipmap/ic_launcher_round"
                 android:onClick="@{()->viewModel.searchGithubUser()}"
-                />
+                android:src="@drawable/img_search" />
         </LinearLayout>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_user_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintVertical_weight="10"
-            app:layout_constraintTop_toBottomOf="@+id/ll_search"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/ll_search"
+            app:layout_constraintVertical_weight="10" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
