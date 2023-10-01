@@ -50,7 +50,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:hint="테스트 입니다."
-                android:text="@={viewModel.query}" />
+                android:text="@={viewModel.searchWord}" />
 
             <ImageView
                 android:layout_width="0dp"

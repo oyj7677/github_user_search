@@ -10,7 +10,9 @@ class LocalGithubUserDataSourceImpl @Inject constructor(
     private val githubUserDao: GithubUserDao
 ) : LocalGithubUserDataSource {
     override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
-        return githubUserDao.getGithubRepoByName(name).entityToDomain()
+        // todo Id, name 문의 답변 대기
+        return githubUserDao.getGithubRepo().entityToDomain()
+//        return githubUserDao.getGithubRepoByName(name).entityToDomain()
     }
 
     override suspend fun insertGithubUserData(githubUserData: GithubUserData) {

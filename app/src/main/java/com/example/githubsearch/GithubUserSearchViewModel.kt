@@ -3,6 +3,7 @@ package com.example.githubsearch
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.github_domain.DataSourceType
+import com.example.github_domain.Search
 import com.example.github_domain.repository.GithubRepository
 import com.example.github_domain.repository.GithubUserData
 import com.example.githubsearch.live_data.ListLiveData
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GithubUserSearchViewModel @Inject constructor(private val gitHubRepository: GithubRepository) : ViewModel() {
+class GithubUserSearchViewModel @Inject constructor(private val search: Search) : ViewModel() {
 
     // 검색 시 보여줄 데이터 리스트
     private var _githubUserList = ListLiveData<GithubUserData>()
@@ -23,13 +24,9 @@ class GithubUserSearchViewModel @Inject constructor(private val gitHubRepository
         get() = _githubUserList
 
     // 검색어
-    private var _query = MutableLiveData<String>()
-    val query: MutableLiveData<String>
-        get() = _query
-
-    private var _dataSourceType = MutableLiveData<DataSourceType>()
-    val dataSourceType: MutableLiveData<DataSourceType>
-        get() = _dataSourceType
+    private var _searchWord = MutableLiveData<String>()
+    val searchWord: MutableLiveData<String>
+        get() = _searchWord
 
     private val _clickSearch = MutableSingleLiveData<Any>()
     val clickSearch: SingleLiveData<Any>
@@ -40,29 +37,26 @@ class GithubUserSearchViewModel @Inject constructor(private val gitHubRepository
         _clickSearch.postValue(Any())
 
         CoroutineScope(Dispatchers.IO).launch {
-            gitHubRepository.getGithubUserDataByName(query.value.toString()).also {
-                _githubUserList.postValue(it.toMutableList())
+            search.searchGithubUser(searchWord.value.toString()).also {
+                getUserList()
             }
         }
     }
 
     fun clickItem(githubUserData: GithubUserData) {
         CoroutineScope(Dispatchers.IO).launch {
-            if (githubUserData.isBookmark) {
-                gitHubRepository.deleteGithubUserData(githubUserData)
-            } else {
-                gitHubRepository.insertGithubUserData(githubUserData)
+            search.updateBookmarkStatus(githubUserData).also {
+                getUserList()
             }
-
-            _githubUserList.value?.map {
-                if (it.id == githubUserData.id) {
-                    it.copy(isBookmark = !it.isBookmark)
-                } else {
-                    it
-                }
-            }.also { _githubUserList.postValue(it?.toMutableList()) }
         }
     }
 
+    fun setDataSourceType(dataSourceType: DataSourceType) {
+        search.setDataSourceType(dataSourceType)
+        getUserList()
+    }
 
+    private fun getUserList() {
+        _githubUserList.postValue(search.getUserDataList().toMutableList())
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.github_domain
 
-sealed class DataSourceType
+import com.example.github_domain.repository.GithubUserData
 
-data object Api : DataSourceType()
-data object Local : DataSourceType()
+enum class DataSourceType {
+    API, LOCAL
+}

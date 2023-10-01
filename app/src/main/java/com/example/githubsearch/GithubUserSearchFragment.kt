@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.example.github_domain.DataSourceType
 import com.example.githubsearch.databinding.GithubUserSearchFragmentBinding
 import com.example.githubsearch.viewpager.ViewPagerFragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -55,6 +56,12 @@ class GithubUserSearchFragment : Fragment() {
                 1 -> tab.text = "Local"
             }
         }.attach()
+
+        binding.vpUserList.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                viewModel.setDataSourceType(DataSourceType.values()[position])
+            }
+        })
     }
 
     private fun hideKeyboard() {

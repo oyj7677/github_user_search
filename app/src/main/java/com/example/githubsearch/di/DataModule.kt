@@ -11,6 +11,7 @@ import com.example.github_data.data.room.GithubUserDao
 import com.example.github_data.data.room.GithubUserDatabase
 import com.example.github_data.retrofit.GitHubService
 import com.example.github_data.retrofit.GithubApi
+import com.example.github_domain.Search
 import com.example.github_domain.repository.GithubRepository
 import dagger.Binds
 import dagger.Module
@@ -60,6 +61,12 @@ abstract class DataModule {
         @Singleton
         fun provideGithubApi(): GithubApi {
             return GitHubService.getGitHubService()
+        }
+
+        @Provides
+        @Singleton
+        fun provideSearch(repository: GithubRepository): Search {
+            return Search(repository)
         }
     }
 }
