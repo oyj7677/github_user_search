@@ -7,5 +7,5 @@ interface LocalGithubUserDataSource {
 
     suspend fun insertGithubUserData(githubUserData: GithubUserData)
 
-    suspend fun deleteGithubUserDataById(id: Int)
+    suspend fun deleteGithubUserData(githubUserData: GithubUserData)
 }

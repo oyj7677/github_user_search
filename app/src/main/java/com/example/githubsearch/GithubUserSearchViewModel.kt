@@ -49,7 +49,7 @@ class GithubUserSearchViewModel @Inject constructor(private val gitHubRepository
     fun clickItem(githubUserData: GithubUserData) {
         CoroutineScope(Dispatchers.IO).launch {
             if (githubUserData.isBookmark) {
-                gitHubRepository.deleteGithubUserDataById(githubUserData.id)
+                gitHubRepository.deleteGithubUserData(githubUserData)
             } else {
                 gitHubRepository.insertGithubUserData(githubUserData)
             }

@@ -30,7 +30,7 @@ class GithubRepositoryImpl @Inject constructor(
         localGithubUserDataSource.insertGithubUserData(githubUserData)
     }
 
-    override suspend fun deleteGithubUserDataById(id: Int) {
-        localGithubUserDataSource.deleteGithubUserDataById(id)
+    override suspend fun deleteGithubUserData(githubUserData: GithubUserData) {
+        localGithubUserDataSource.deleteGithubUserData(githubUserData)
     }
 }

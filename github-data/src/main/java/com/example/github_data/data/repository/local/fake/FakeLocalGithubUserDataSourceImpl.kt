@@ -19,7 +19,7 @@ class FakeLocalGithubUserDataSourceImpl :
         githubUserDataList.add(githubUserData.toEntity())
     }
 
-    override suspend fun deleteGithubUserDataById(id: Int) {
-        githubUserDataList.removeIf { it.id == id }
+    override suspend fun deleteGithubUserData(githubUserData: GithubUserData) {
+        githubUserDataList.removeIf { it.id == githubUserData.id }
     }
 }

@@ -7,5 +7,5 @@ interface GithubRepository {
 
     suspend fun insertGithubUserData(githubUserData: GithubUserData)
 
-    suspend fun deleteGithubUserDataById(id: Int)
+    suspend fun deleteGithubUserData(githubUserData: GithubUserData)
 }

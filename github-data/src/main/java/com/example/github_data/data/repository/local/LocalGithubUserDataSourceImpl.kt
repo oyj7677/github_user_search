@@ -10,8 +10,7 @@ class LocalGithubUserDataSourceImpl @Inject constructor(
     private val githubUserDao: GithubUserDao
 ) : LocalGithubUserDataSource {
     override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
-        // todo id와 name 관련 답변 후 수정
-        return githubUserDao.getGithubRepo().entityToDomain()
+        return githubUserDao.getGithubRepoByName(name).entityToDomain()
     }
 
     override suspend fun insertGithubUserData(githubUserData: GithubUserData) {
