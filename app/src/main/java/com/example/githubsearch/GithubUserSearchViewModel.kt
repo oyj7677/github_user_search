@@ -8,6 +8,7 @@ import com.example.github_domain.repository.GithubUserData
 import com.example.githubsearch.live_data.ListLiveData
 import com.example.githubsearch.live_data.MutableSingleLiveData
 import com.example.githubsearch.live_data.SingleLiveData
+import com.example.githubsearch.viewpager.UserDataListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,11 +16,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GithubUserSearchViewModel @Inject constructor(private val githubUserManager: GithubUserManager) : ViewModel() {
+class GithubUserSearchViewModel @Inject constructor(private val githubUserManager: GithubUserManager) :
+    ViewModel() {
 
     // 검색 시 보여줄 데이터 리스트
-    private var _githubUserList = ListLiveData<GithubUserData>()
-    val githubUserList: ListLiveData<GithubUserData>
+    private var _githubUserList = ListLiveData<UserDataListItem>()
+    val githubUserList: ListLiveData<UserDataListItem>
         get() = _githubUserList
 
     // 검색어
@@ -29,7 +31,7 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
 
     private val _clickSearch = MutableSingleLiveData<Any>()
     val clickSearch: SingleLiveData<Any>
-            get() = _clickSearch
+        get() = _clickSearch
 
     // 검색 로직
     fun searchGithubUser() {
@@ -42,9 +44,9 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
         }
     }
 
-    fun clickItem(githubUserData: GithubUserData) {
+    fun clickItem(userData: UserDataListItem.UserData) {
         CoroutineScope(Dispatchers.IO).launch {
-            githubUserManager.updateBookmarkStatus(githubUserData).also {
+            githubUserManager.updateBookmarkStatus(userData.toGithubUserData()).also {
                 getUserList()
             }
         }
@@ -56,6 +58,29 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
     }
 
     private fun getUserList() {
-        _githubUserList.postValue(githubUserManager.getUserDataList().toMutableList())
+        val userDataListItem = createUserDataListItem(githubUserManager.getUserDataList())
+        _githubUserList.postValue(userDataListItem)
+    }
+
+    private fun createUserDataListItem(githubUserData: List<GithubUserData>): MutableList<UserDataListItem> {
+        val userDataListItem = mutableListOf<UserDataListItem>()
+        val sortedList = githubUserData.sortedBy { it.name.toLowerCase() }
+
+        for ((i, data) in sortedList.withIndex()) {
+            if (i == 0) {
+                userDataListItem.add(UserDataListItem.HeaderData(data.name[0].toString()))
+                userDataListItem.add(
+                    data.toUserDataListItem()
+                )
+            } else {
+                if (sortedList[i].name[0].toLowerCase() != sortedList[i - 1].name[0].toLowerCase()) {
+                    userDataListItem.add(UserDataListItem.HeaderData(data.name[0].toString()))
+                }
+                userDataListItem.add(
+                    data.toUserDataListItem()
+                )
+            }
+        }
+        return userDataListItem
     }
 }
