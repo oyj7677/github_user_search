@@ -45,6 +45,8 @@ class UserListFragment : Fragment() {
     private fun initRecyclerView() {
         activity?.let {
             binding.rvUserList.layoutManager = LinearLayoutManager(it.baseContext)
+            val itemDecoration = CustomDividerItemDecoration(it.baseContext)
+            binding.rvUserList.addItemDecoration(itemDecoration)
             userListAdapter = UserListAdapter(UserListAdapter.ItemClickListener { userData ->
                 viewModel.clickItem(userData)
             })

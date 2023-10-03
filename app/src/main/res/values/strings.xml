@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GithubSearch</string>
+    <string name="TEXT_API">Api</string>
+    <string name="TEXT_LOCAL">Local</string>
 </resources>

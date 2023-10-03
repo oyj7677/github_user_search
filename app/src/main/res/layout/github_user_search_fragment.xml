@@ -49,8 +49,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:hint="테스트 입니다."
-                android:text="@={viewModel.searchWord}" />
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@={viewModel.searchWord}"
+                app:onEnterSearch="@{viewModel}"/>
 
             <ImageView
                 android:layout_width="0dp"

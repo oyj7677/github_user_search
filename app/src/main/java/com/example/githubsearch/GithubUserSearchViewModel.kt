@@ -37,7 +37,7 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
     fun searchGithubUser() {
         _clickSearch.postValue(Any())
 
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             githubUserManager.searchGithubUser(searchWord.value.toString()).also {
                 getUserList()
             }

@@ -1,6 +1,6 @@
 package com.example.githubsearch
 
-import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,14 +8,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.github_domain.DataSourceType
 import com.example.githubsearch.databinding.GithubUserSearchFragmentBinding
 import com.example.githubsearch.viewpager.ViewPagerFragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -61,8 +59,8 @@ class GithubUserSearchFragment : Fragment() {
 
         TabLayoutMediator(binding.tabDataSourceType, binding.vpUserList) { tab, position ->
             when (position) {
-                0 -> tab.text = "API"
-                1 -> tab.text = "Local"
+                0 -> tab.text = getString(R.string.TEXT_API)
+                1 -> tab.text = getString(R.string.TEXT_LOCAL)
             }
         }.attach()
 
@@ -74,11 +72,12 @@ class GithubUserSearchFragment : Fragment() {
     }
 
     private fun hideKeyboard() {
-        if(activity != null && requireActivity().currentFocus != null) {
-            val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+        if (activity != null && requireActivity().currentFocus != null) {
+            val inputMethodManager =
+                requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(
+                requireActivity().currentFocus!!.windowToken, 0
+            )
         }
     }
-
-
 }
