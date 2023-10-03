@@ -11,6 +11,7 @@ import com.example.githubsearch.live_data.MutableSingleLiveData
 import com.example.githubsearch.live_data.SingleLiveData
 import com.example.githubsearch.viewpager.UserDataListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,7 +37,7 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
     fun searchGithubUser() {
         _clickSearch.postValue(Any())
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO){
             githubUserManager.searchGithubUser(searchWord.value.toString()).also {
                 getUserList()
             }
@@ -44,7 +45,7 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
     }
 
     fun clickItem(userData: UserDataListItem.UserData) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             githubUserManager.updateBookmarkStatus(userData.toGithubUserData()).also {
                 getUserList()
             }

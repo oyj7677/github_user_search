@@ -12,7 +12,8 @@ class RemoteGithubUserDataSourceImpl @Inject constructor(private val githubServi
     RemoteGithubUserDataSource {
     override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
         return CoroutineScope(Dispatchers.IO).async {
-            val response = githubService.getGitHubUserData(name)
+            val query = "$name in:login type:user"
+            val response = githubService.getGitHubUserData(query)
             val body = response.body()
 
             if (response.isSuccessful && body != null) {
