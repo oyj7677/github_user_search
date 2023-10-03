@@ -4,26 +4,34 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.github_domain.repository.GithubUserData
 import com.example.githubsearch.databinding.HeaderListBinding
 import com.example.githubsearch.databinding.UserListBinding
 
 class UserListAdapter(private val itemClickListener: ItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    companion object {
+        const val VIEW_TYPE_HEADER = 0
+        const val VIEW_TYPE_USER = 1
+    }
+    
     private var userDataList = emptyList<UserDataListItem>()
 
     class UserViewHolder(private var binding: UserListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(userData: UserDataListItem.UserData, clickListener: ItemClickListener) {
-            binding.userData = userData
-            binding.clickListener = clickListener
-            binding.executePendingBindings()
+            binding.apply {
+                this.userData = userData
+                this.clickListener = clickListener
+                executePendingBindings()
+            }
         }
     }
 
     class HeaderViewHolder(private var binding: HeaderListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(headerData: UserDataListItem.HeaderData) {
-            binding.headerData = headerData
-            binding.executePendingBindings()
+            binding.apply {
+                this.headerData = headerData
+                executePendingBindings()
+            }
         }
     }
 
@@ -84,8 +92,5 @@ class UserListAdapter(private val itemClickListener: ItemClickListener) : Recycl
         fun onClickItem(userData: UserDataListItem.UserData) = clickListener(userData)
     }
 
-    companion object {
-        const val VIEW_TYPE_HEADER = 0
-        const val VIEW_TYPE_USER = 1
-    }
+
 }

@@ -1,6 +1,6 @@
 package com.example.githubsearch.viewpager
 
-sealed class UserDataListItem{
+sealed class UserDataListItem {
     data class UserData(
         val id: Int,
         val name: String,

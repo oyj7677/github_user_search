@@ -20,18 +20,27 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GithubUserSearchFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = GithubUserSearchFragment()
+    }
+
     private val binding by lazy { GithubUserSearchFragmentBinding.inflate(layoutInflater) }
     private val viewModel: GithubUserSearchViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initDataBinding()
         initViewModelObserve()
         initViewPager()
-
-        return binding.root
     }
 
     private fun initDataBinding() {
@@ -71,8 +80,5 @@ class GithubUserSearchFragment : Fragment() {
         }
     }
 
-    companion object {
-        fun newInstance() = GithubUserSearchFragment()
-    }
 
 }
