@@ -1,9 +1,9 @@
 package com.example.github_domain.repository
 
 interface GithubRepository {
-    suspend fun getGithubUserDataByName(name: String): List<GithubUserData>
+    suspend fun getGithubUserDataByName(searchWord: String): List<GithubUserData>
 
-    suspend fun getBookmarkGithubUserData(name: String): List<GithubUserData>
+    suspend fun getBookmarkGithubUserData(searchWord: String): List<GithubUserData>
 
     suspend fun insertGithubUserData(githubUserData: GithubUserData)
 

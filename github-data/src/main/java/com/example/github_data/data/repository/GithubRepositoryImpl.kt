@@ -11,9 +11,12 @@ class GithubRepositoryImpl @Inject constructor(
     private val localGithubUserDataSource: LocalGithubUserDataSource
 ) : GithubRepository {
 
-    override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
-        val bookmarkUserData = localGithubUserDataSource.getGithubUserData(name)
-        val remoteUserData = remoteGithubUserDataSource.getGithubUserDataByName(name)
+    /*
+    * api를 통해 데이터를 가져오고, 로컬 데이터(즐겨찾기)와 비교하여 즐겨찾기 여부를 결정한다.
+    * */
+    override suspend fun getGithubUserDataByName(searchWord: String): List<GithubUserData> {
+        val bookmarkUserData = localGithubUserDataSource.getGithubUserData(searchWord)
+        val remoteUserData = remoteGithubUserDataSource.getGithubUserDataByName(searchWord)
 
         return remoteUserData.map { remoteData ->
             val isBookmark = bookmarkUserData.any { bookmarkData ->
@@ -23,8 +26,8 @@ class GithubRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getBookmarkGithubUserData(name: String): List<GithubUserData> {
-        return localGithubUserDataSource.getGithubUserData(name)
+    override suspend fun getBookmarkGithubUserData(searchWord: String): List<GithubUserData> {
+        return localGithubUserDataSource.getGithubUserData(searchWord)
     }
 
     override suspend fun insertGithubUserData(githubUserData: GithubUserData) {

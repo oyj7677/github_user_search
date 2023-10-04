@@ -58,6 +58,10 @@ class GithubUserSearchFragment : Fragment() {
         }
     }
 
+    /*
+    * API호출과 DB조회를 위한 ViewPager를 초기화 합니다.
+    * 앱 실행 시 API호출을 방지하기 위해 isInitialLoad를 사용하여 초기화 시에는 호출하지 않습니다.
+    * */
     private fun initViewPager() {
         binding.vpUserList.adapter = ViewPagerFragmentStateAdapter(requireActivity())
         binding.vpUserList.orientation = ViewPager2.ORIENTATION_HORIZONTAL

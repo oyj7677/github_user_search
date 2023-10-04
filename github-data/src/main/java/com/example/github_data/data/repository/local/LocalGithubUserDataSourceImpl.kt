@@ -10,12 +10,16 @@ class LocalGithubUserDataSourceImpl @Inject constructor(
     private val githubUserDao: GithubUserDao
 ) : LocalGithubUserDataSource {
 
-    override suspend fun getGithubUserData(name: String): List<GithubUserData> {
+    /*
+    * DB에서 데이터를 호출한다.
+    * 검색어가 없을 경우 모든 데이터를 가져오고, 검색어가 있을 경우 검색어를 포함하는 데이터만 가져온다.
+    * */
+    override suspend fun getGithubUserData(searchWord: String): List<GithubUserData> {
         return try {
-            if (name.isEmpty()) {
+            if (searchWord.isEmpty()) {
                 githubUserDao.getGithubRepo().entityToDomain()
             } else {
-                githubUserDao.getGithubRepoByName(name).entityToDomain()
+                githubUserDao.getGithubRepoByName(searchWord).entityToDomain()
             }
         } catch (e: Exception) {
             e.printStackTrace()

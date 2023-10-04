@@ -11,7 +11,7 @@ class FakeLocalGithubUserDataSourceImpl :
     private val githubUserDataList = mutableListOf<GithubBookmarkUserEntity>()
 
     // 현재 name과 login 구분이 어려운 관계로 모든 값을 호출한다.
-    override suspend fun getGithubUserData(name: String): List<GithubUserData> {
+    override suspend fun getGithubUserData(searchWord: String): List<GithubUserData> {
         return githubUserDataList.entityToDomain()
     }
 

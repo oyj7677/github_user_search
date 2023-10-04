@@ -38,7 +38,11 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
     val toastEvent: SingleLiveData<Int>
         get() = _toastEvent
 
-    // 검색 로직
+    /*
+    * Github user를 검색하는 앰의 핵심 함수입니다.
+    * viewModel에서 githubUserManager.searchGithubUser()를 호출하여 데이터를 가져옵니다.
+    * 세팅되어있는 dataSourceType에 의해 API 또는 DB에서 데이터를 가져옵니다.
+    * */
     fun searchGithubUser() {
         _clickSearch.postValue(Any())
 
@@ -55,6 +59,10 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
         }
     }
 
+    /*
+    * 리스트를 클릭했을때의 이벤트입니다.
+    * githubUserManager.updateBookmarkStatus()를 호출하여 DB에 저장 또는 삭제합니다.
+    * */
     fun clickItem(userData: UserDataListItem.UserData) {
         viewModelScope.launch(Dispatchers.IO) {
             githubUserManager.updateBookmarkStatus(userData.toGithubUserData()).also {
@@ -63,6 +71,11 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
         }
     }
 
+    /*
+    * 호출할 데이터의 타입을 세팅합니다.
+    * DataSourceType.API: API에서 데이터를 가져옵니다.
+    * DataSourceType.LOCAL: DB에서 데이터를 가져옵니다.
+    * */
     fun setDataSourceType(dataSourceType: DataSourceType) {
         githubUserManager.setDataSourceType(dataSourceType)
         getUserList()
@@ -72,11 +85,16 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
         val userDataListItem = createUserDataListItem(githubUserManager.getUserDataList())
         if (userDataListItem.isEmpty()) {
             _toastEvent.postValue(R.string.ERR_MSG_EMPTY_SEARCH_RESULT)
+            _githubUserList.postValue(userDataListItem)
         } else {
             _githubUserList.postValue(userDataListItem)
         }
     }
 
+    /*
+    * 리스트의 아이템을 생성하는 함수입니다.
+    * 리스트를 정렬하고, 이름의 첫글자가 다를 경우에는 헤더를 추가합니다.
+    * */
     private fun createUserDataListItem(githubUserData: List<GithubUserData>): MutableList<UserDataListItem> {
         val userDataListItem = mutableListOf<UserDataListItem>()
         val sortedList = githubUserData.sortedBy { it.name.lowercase(Locale.getDefault()) }

@@ -12,21 +12,4 @@ import androidx.room.RoomDatabase
 )
 abstract class GithubUserDatabase: RoomDatabase() {
     abstract fun GithubUserDao(): GithubUserDao
-
-    companion object {
-        private var instance: GithubUserDatabase? = null
-
-        @Synchronized
-        fun getInstance(context: Context): GithubUserDatabase? {
-            if (instance == null)
-                synchronized(GithubUserDatabase::class) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        GithubUserDatabase::class.java,
-                        "githubUserDatabase.db"
-                    ).build()
-                }
-            return instance
-        }
-    }
 }

@@ -16,6 +16,10 @@ class GithubUserManager @Inject constructor(
     private val localUserDataList: List<GithubUserData>
         get() = _localUserDataList
 
+    /*
+    * Github user 검색을 수행합니다.
+    * search.dataSourceType에 따라 api 또는 local db에서 데이터를 호출하고 저장합니다.
+    * */
     suspend fun searchGithubUser(searchWord: String) {
         when (search.dataSourceType) {
             Api -> {
@@ -46,10 +50,15 @@ class GithubUserManager @Inject constructor(
         }
     }
 
+    /*
+    * Github user의 즐겨찾기 상태를 업데이트합니다.
+    * */
     suspend fun updateBookmarkStatus(githubUserData: GithubUserData) {
         bookmark.updateBookmarkStatus(githubUserData)
 
-        _localUserDataList.remove(githubUserData)
+        if(githubUserData.isBookmark) {
+            _localUserDataList.remove(githubUserData)
+        }
 
         _remoteUserDataList = _remoteUserDataList.map {
             if (it.id == githubUserData.id) {
