@@ -9,8 +9,18 @@ import javax.inject.Inject
 class LocalGithubUserDataSourceImpl @Inject constructor(
     private val githubUserDao: GithubUserDao
 ) : LocalGithubUserDataSource {
-    override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
-        return githubUserDao.getGithubRepoByName(name).entityToDomain()
+
+    override suspend fun getGithubUserData(name: String): List<GithubUserData> {
+        return try {
+            if (name.isEmpty()) {
+                githubUserDao.getGithubRepo().entityToDomain()
+            } else {
+                githubUserDao.getGithubRepoByName(name).entityToDomain()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
     }
 
     override suspend fun insertGithubUserData(githubUserData: GithubUserData) {

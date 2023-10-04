@@ -10,15 +10,21 @@ import javax.inject.Inject
 
 class RemoteGithubUserDataSourceImpl @Inject constructor(private val githubService: GithubApi) :
     RemoteGithubUserDataSource {
+
     override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
         return CoroutineScope(Dispatchers.IO).async {
-            val query = "$name in:login type:user"
-            val response = githubService.getGitHubUserData(query)
-            val body = response.body()
+            try {
+                val query = "$name in:login type:user"
+                val response = githubService.getGitHubUserData(query)
+                val body = response.body()
 
-            if (response.isSuccessful && body != null) {
-                body.items.takeIf { it.isNotEmpty() }?.remoteItemToDomain() ?: emptyList()
-            } else {
+                if (response.isSuccessful && body != null) {
+                    body.items.takeIf { it.isNotEmpty() }?.remoteItemToDomain() ?: emptyList()
+                } else {
+                    emptyList()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
                 emptyList()
             }
         }.await()

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
@@ -25,7 +26,7 @@ class GithubUserSearchFragment : Fragment() {
 
     private val binding by lazy { GithubUserSearchFragmentBinding.inflate(layoutInflater) }
     private val viewModel: GithubUserSearchViewModel by activityViewModels()
-
+    private var isInitialLoad = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,6 +52,10 @@ class GithubUserSearchFragment : Fragment() {
             hideKeyboard()
             binding.etSearchText.clearFocus()
         }
+
+        viewModel.toastEvent.observe(viewLifecycleOwner) { msg ->
+            Toast.makeText(requireContext(), getString(msg), Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun initViewPager() {
@@ -66,7 +71,11 @@ class GithubUserSearchFragment : Fragment() {
 
         binding.vpUserList.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                viewModel.setDataSourceType(DataSourceType.values()[position])
+                if (isInitialLoad) {
+                    viewModel.setDataSourceType(DataSourceType.values()[position])
+                } else {
+                    isInitialLoad = true
+                }
             }
         })
     }

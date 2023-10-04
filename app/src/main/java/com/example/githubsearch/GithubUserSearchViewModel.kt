@@ -13,6 +13,7 @@ import com.example.githubsearch.viewpager.UserDataListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +26,7 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
         get() = _githubUserList
 
     // 검색어
-    private var _searchWord = MutableLiveData<String>()
+    private var _searchWord = MutableLiveData("")
     val searchWord: MutableLiveData<String>
         get() = _searchWord
 
@@ -33,9 +34,19 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
     val clickSearch: SingleLiveData<Any>
         get() = _clickSearch
 
+    private val _toastEvent = MutableSingleLiveData<Int>()
+    val toastEvent: SingleLiveData<Int>
+        get() = _toastEvent
+
     // 검색 로직
     fun searchGithubUser() {
         _clickSearch.postValue(Any())
+
+        val dataSourceType = githubUserManager.getDataSourceType()
+        if (searchWord.value.isNullOrEmpty() && dataSourceType == DataSourceType.API) {
+            _toastEvent.postValue(R.string.ERR_MSG_EMPTY_API_SEARCH_WORD)
+            return
+        }
 
         viewModelScope.launch(Dispatchers.IO) {
             githubUserManager.searchGithubUser(searchWord.value.toString()).also {
@@ -59,12 +70,16 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
 
     private fun getUserList() {
         val userDataListItem = createUserDataListItem(githubUserManager.getUserDataList())
-        _githubUserList.postValue(userDataListItem)
+        if (userDataListItem.isEmpty()) {
+            _toastEvent.postValue(R.string.ERR_MSG_EMPTY_SEARCH_RESULT)
+        } else {
+            _githubUserList.postValue(userDataListItem)
+        }
     }
 
     private fun createUserDataListItem(githubUserData: List<GithubUserData>): MutableList<UserDataListItem> {
         val userDataListItem = mutableListOf<UserDataListItem>()
-        val sortedList = githubUserData.sortedBy { it.name.toLowerCase() }
+        val sortedList = githubUserData.sortedBy { it.name.lowercase(Locale.getDefault()) }
 
         for ((i, data) in sortedList.withIndex()) {
             if (i == 0) {
@@ -73,7 +88,7 @@ class GithubUserSearchViewModel @Inject constructor(private val githubUserManage
                     data.toUserDataListItem()
                 )
             } else {
-                if (sortedList[i].name[0].toLowerCase() != sortedList[i - 1].name[0].toLowerCase()) {
+                if (sortedList[i].name[0].lowercaseChar() != sortedList[i - 1].name[0].lowercaseChar()) {
                     userDataListItem.add(UserDataListItem.HeaderData(data.name[0].toString()))
                 }
                 userDataListItem.add(

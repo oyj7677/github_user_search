@@ -39,6 +39,13 @@ class GithubUserManager @Inject constructor(
         search.setDataSourceType(dataSourceType)
     }
 
+    fun getDataSourceType(): DataSourceType {
+        return when (search.dataSourceType) {
+            Api -> DataSourceType.API
+            Local -> DataSourceType.LOCAL
+        }
+    }
+
     suspend fun updateBookmarkStatus(githubUserData: GithubUserData) {
         bookmark.updateBookmarkStatus(githubUserData)
 

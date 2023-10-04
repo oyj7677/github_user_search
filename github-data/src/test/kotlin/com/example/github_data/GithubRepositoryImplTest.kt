@@ -53,7 +53,7 @@ class GithubRepositoryImplTest {
             repository.insertGithubUserData(actual)
 
             // then : localData에 저장된 값과 items의 첫번째 값이 같다.
-            assertThat(actual).isEqualTo(repository.getBookmarkGithubUserDataByName("ho")[0])
+            assertThat(actual).isEqualTo(repository.getBookmarkGithubUserData("ho")[0])
         }
 
     @Test

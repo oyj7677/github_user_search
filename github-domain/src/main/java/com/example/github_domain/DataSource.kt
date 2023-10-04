@@ -13,7 +13,7 @@ data object Api : DataSource() {
 
 data object Local : DataSource() {
     override suspend fun getSearchedUserList(repository: GithubRepository, searchWord: String): List<GithubUserData> {
-        return repository.getBookmarkGithubUserDataByName(searchWord)
+        return repository.getBookmarkGithubUserData(searchWord)
     }
 }
 

@@ -10,8 +10,9 @@ class GithubRepositoryImpl @Inject constructor(
     private val remoteGithubUserDataSource: RemoteGithubUserDataSource,
     private val localGithubUserDataSource: LocalGithubUserDataSource
 ) : GithubRepository {
+
     override suspend fun getGithubUserDataByName(name: String): List<GithubUserData> {
-        val bookmarkUserData = localGithubUserDataSource.getGithubUserDataByName(name)
+        val bookmarkUserData = localGithubUserDataSource.getGithubUserData(name)
         val remoteUserData = remoteGithubUserDataSource.getGithubUserDataByName(name)
 
         return remoteUserData.map { remoteData ->
@@ -22,8 +23,8 @@ class GithubRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getBookmarkGithubUserDataByName(name: String): List<GithubUserData> {
-        return localGithubUserDataSource.getGithubUserDataByName(name)
+    override suspend fun getBookmarkGithubUserData(name: String): List<GithubUserData> {
+        return localGithubUserDataSource.getGithubUserData(name)
     }
 
     override suspend fun insertGithubUserData(githubUserData: GithubUserData) {
