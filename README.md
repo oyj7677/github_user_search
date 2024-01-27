@@ -1,7 +1,7 @@
 # remember_test
 
 ## 프로젝트 설명
-이 프로젝트는 리멤버 안드로이드 팀의 채용 과제로 만들어졌습니다. Github API의 Search users를 기반으로 사용자 검색 및 즐겨찾기 기능을 수행합니다.
+Github API의 Search users를 기반으로 사용자 검색 및 즐겨찾기 기능을 수행합니다.
 
 ## 기능 요구 사항
  - Github 사용자 검색 API(https://developer.github.com/v3/search/#search-users)를
