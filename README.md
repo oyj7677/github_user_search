@@ -50,3 +50,5 @@ Github API의 Search users를 기반으로 사용자 검색 및 즐겨찾기 기
 
 - 클린아키택처
 클린아키텍처적으로 구성하기 위해서는 presentation module이 존재해야합니다. 하지만 앱의 규모가 작아 presentation module을 구성하지 않고 app module에 많은 역할을 부여했습니다.
+
+테스트 사항으로 리드미를 변경해봅니다.
